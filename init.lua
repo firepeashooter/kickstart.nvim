@@ -683,7 +683,7 @@ require('lazy').setup({
         cssls = {},
         ts_ls = {},
         -- gopls = {},
-        -- pyright = {},
+        pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -756,48 +756,71 @@ require('lazy').setup({
       'theHamsta/nvim-dap-virtual-text',
     },
 
-   --Python Debugger???
-config = function()
-    local dap = require("dap")
-    local dapui = require("dapui")
+    --Python Debugger???
+    config = function()
+      local dap = require 'dap'
+      local dapui = require 'dapui'
 
-    dap.adapters.python = {
-      type = 'executable';
-      command = 'python3';
-      args = { '-m', 'debugpy.adapter' };
-    }
+      dap.adapters.python = {
+        type = 'executable',
+        command = 'python3',
+        args = { '-m', 'debugpy.adapter' },
+      }
 
-    dap.configurations.python = {
-      {
-        type = 'python';
-        request = 'launch';
-        name = "Launch file";
-        program = "${file}";
-        pythonPath = function()
-          local venv_path = os.getenv("VIRTUAL_ENV")
-          if venv_path then
-            return venv_path .. "/bin/python"
-          else
-            return "python3"
-          end
-        end;
-      },
-    }
+      dap.configurations.python = {
+        {
+          type = 'python',
+          request = 'launch',
+          name = 'Launch file',
+          program = '${file}',
+          pythonPath = function()
+            local venv_path = os.getenv 'VIRTUAL_ENV'
+            if venv_path then
+              return venv_path .. '/bin/python'
+            else
+              return 'python3'
+            end
+          end,
+        },
+      }
 
-    dapui.setup()
-    dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
-    dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
-    dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
+      dapui.setup()
 
-    vim.keymap.set("n", "<F5>", function() dap.continue() end, { desc = "DAP: Continue" })
-    vim.keymap.set("n", "<F10>", function() dap.step_over() end, { desc = "DAP: Step Over" })
-    vim.keymap.set("n", "<F11>", function() dap.step_into() end, { desc = "DAP: Step Into" })
-    vim.keymap.set("n", "<F12>", function() dap.step_out() end, { desc = "DAP: Step Out" })
-    vim.keymap.set("n", "<leader>b", function() dap.toggle_breakpoint() end, { desc = "DAP: Toggle Breakpoint" })
-    vim.keymap.set("n", "<leader>B", function() dap.set_breakpoint() end, { desc = "DAP: Set Breakpoint" })
-    vim.keymap.set("n", "<leader>dr", function() dap.repl.open() end, { desc = "DAP: Open REPL" })
-  end,
-},
+      vim.fn.sign_define('DapBreakpoint', { text = '🐞' })
+
+      dap.listeners.after.event_initialized['dapui_config'] = function()
+        dapui.open()
+      end
+      dap.listeners.before.event_terminated['dapui_config'] = function()
+        dapui.close()
+      end
+      dap.listeners.before.event_exited['dapui_config'] = function()
+        dapui.close()
+      end
+
+      vim.keymap.set('n', '<F5>', function()
+        dap.continue()
+      end, { desc = 'DAP: Continue' })
+      vim.keymap.set('n', '<F10>', function()
+        dap.step_over()
+      end, { desc = 'DAP: Step Over' })
+      vim.keymap.set('n', '<F11>', function()
+        dap.step_into()
+      end, { desc = 'DAP: Step Into' })
+      vim.keymap.set('n', '<F12>', function()
+        dap.step_out()
+      end, { desc = 'DAP: Step Out' })
+      vim.keymap.set('n', '<leader>b', function()
+        dap.toggle_breakpoint()
+      end, { desc = 'DAP: Toggle Breakpoint' })
+      vim.keymap.set('n', '<leader>B', function()
+        dap.set_breakpoint()
+      end, { desc = 'DAP: Set Breakpoint' })
+      vim.keymap.set('n', '<leader>dr', function()
+        dap.repl.open()
+      end, { desc = 'DAP: Open REPL' })
+    end,
+  },
 
   { -- Autoformat
     'stevearc/conform.nvim',

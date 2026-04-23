@@ -1,5 +1,4 @@
 --[[
-
 =====================================================================
 ==================== READ THIS BEFORE CONTINUING ====================
 =====================================================================
@@ -203,8 +202,12 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+-- Keybinds to make split resizing easier.
 vim.keymap.set('n', '<leader>w', '<Nop>', { desc = 'Window' })
 vim.keymap.set('n', '<leader>wv', '<cmd>:vsplit<cr>', { desc = 'Vertical Split' })
+
+vim.keymap.set('n', '<leader>c', '<cmd>:e $MYVIMRC<cr>', { desc = 'Open Config' })
+
 -- Keymap for NeoTree
 vim.keymap.set('n', '<leader>e', ':Neotree toggle<CR>', { desc = 'Open Neotree' })
 
@@ -830,6 +833,16 @@ require('lazy').setup({
     end,
   },
 
+  {
+    'rachartier/tiny-inline-diagnostic.nvim',
+    event = 'VeryLazy',
+    priority = 1000,
+    config = function()
+      require('tiny-inline-diagnostic').setup()
+      vim.diagnostic.config { virtual_text = false } -- Disable Neovim's default virtual text diagnostics
+    end,
+  },
+
   { -- Autoformat
     'stevearc/conform.nvim',
     event = { 'BufWritePre' },
@@ -869,6 +882,40 @@ require('lazy').setup({
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
       },
     },
+  },
+
+  -- Copilot
+  {
+    'github/copilot.vim',
+    config = function()
+      -- 1. Disable Copilot by default
+      vim.g.copilot_enabled = false
+
+      local toggle_copilot = function()
+        -- If it's 1 (true in Vimscript) or true (Lua), it's on
+        if vim.g.copilot_enabled == 1 or vim.g.copilot_enabled == true then
+          vim.cmd 'Copilot disable'
+          vim.g.copilot_enabled = false -- Force the variable to update
+          print 'Copilot Off'
+        else
+          vim.cmd 'Copilot enable'
+          vim.g.copilot_enabled = true -- Force the variable to update
+          print 'Copilot On'
+        end
+      end
+
+      vim.keymap.set('n', '<leader>p', toggle_copilot, { desc = 'Toggle Copilot' })
+
+      -- If you want to disable it for specific filetypes (like big data files)
+      -- vim.g.copilot_filetypes = {
+      --   ['markdown'] = false, -- Example Disable for markdown
+      -- }
+
+      -- If Tab is already being used by your completion (blink/cmp)
+      -- You might need these to prevent conflicts:
+      -- vim.g.copilot_no_tab_map = true
+      -- vim.g.copilot_assume_mapped = true
+    end,
   },
 
   { -- Autocompletion

@@ -882,6 +882,21 @@ require('lazy').setup({
     },
   },
 
+  {
+    'github/copilot.vim',
+    config = function()
+      -- If you want to disable it for specific filetypes (like big data files)
+      -- vim.g.copilot_filetypes = {
+      --   ['markdown'] = false, -- Example Disable for markdown
+      -- }
+
+      -- If Tab is already being used by your completion (blink/cmp)
+      -- You might need these to prevent conflicts:
+      -- vim.g.copilot_no_tab_map = true
+      -- vim.g.copilot_assume_mapped = true
+    end,
+  },
+
   { -- Autocompletion
     'saghen/blink.cmp',
     event = 'VimEnter',

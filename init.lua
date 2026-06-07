@@ -169,6 +169,10 @@ vim.o.scrolloff = 10
 -- See `:help 'confirm'`
 vim.o.confirm = true
 
+-- CAN REMOVE IF ISSUE HOPEFULLY ALLOWS VITE TO SEE CHANGES ON SAVE
+vim.opt.backup = false -- Don't create a backup file
+vim.opt.writebackup = false -- Don't create a backup before overwriting
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 

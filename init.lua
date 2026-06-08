@@ -212,6 +212,10 @@ vim.keymap.set('n', '<leader>wv', '<cmd>:vsplit<cr>', { desc = 'Vertical Split' 
 
 vim.keymap.set('n', '<leader>c', '<cmd>:e $MYVIMRC<cr>', { desc = 'Open Config' })
 
+-- Keybinds for keeping indents selected
+vim.keymap.set('v', '<', '<gv', { desc = 'Indent left and reselect', silent = true })
+vim.keymap.set('v', '>', '>gv', { desc = 'Indent right and reselect', silent = true })
+
 -- Keymap for NeoTree
 vim.keymap.set('n', '<leader>e', ':Neotree toggle<CR>', { desc = 'Open Neotree' })
 

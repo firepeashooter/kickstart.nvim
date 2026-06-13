@@ -210,6 +210,9 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 vim.keymap.set('n', '<leader>w', '<Nop>', { desc = 'Window' })
 vim.keymap.set('n', '<leader>wv', '<cmd>:vsplit<cr>', { desc = 'Vertical Split' })
 
+--Keybinds to open a terminal
+vim.keymap.set('n', '<leader>wt', '<cmd>:term<cr>', { desc = 'Terminal' })
+
 vim.keymap.set('n', '<leader>c', '<cmd>:e $MYVIMRC<cr>', { desc = 'Open Config' })
 
 -- Keybinds for keeping indents selected
